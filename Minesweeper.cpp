@@ -8,12 +8,12 @@ using namespace std;
 const int BOARD_SIZE = 10;
 const int NUM_MINES = 10;
 
-// Определение клетки на доске
+// Definition of a cell on the board
 struct Cell {
     int row;
     int col;
 };
-// Определение доски
+// Board Definition
 class Board {
 public:
     Board();
@@ -31,13 +31,13 @@ private:
     bool game_over_;
 };
 
-// Конструктор доски
+// Board constructor
 Board::Board() {
-    // Создание пустой доски
+    // Create an empty board
     board_ = vector<vector<int>>(BOARD_SIZE, vector<int>(BOARD_SIZE, 0));
     revealed_ = vector<vector<bool>>(BOARD_SIZE, vector<bool>(BOARD_SIZE, false));
     game_over_ = false;
-    // Размещение мин на доске
+    // Placement of mines on the board
     int num_mines = 0;
     while (num_mines < NUM_MINES) {
         int row = rand() % BOARD_SIZE;
@@ -49,7 +49,7 @@ Board::Board() {
     }
 }
 
-// Отображение доски
+// Board display
 void Board::display() {
     cout << " ";
     for (int col = 0; col < BOARD_SIZE; col++) {
@@ -74,7 +74,7 @@ void Board::display() {
     }
 }
 
-// Открытие клетки
+// Cell opening
 void Board::reveal(Cell cell) {
     if (game_over_) {
         return;
@@ -106,7 +106,7 @@ void Board::reveal(Cell cell) {
     }
 }
 
-// Проверка, является ли клетка миной
+// Checking if a cell is a mine
 bool Board::isMine(Cell cell) {
     if (!isValidCell(cell)) {
         return false;
@@ -114,7 +114,7 @@ bool Board::isMine(Cell cell) {
     return board_[cell.row][cell.col] == -1;
 }
 
-// Проверка, была ли клетка открыта
+// Checking if the cage has been opened
 bool Board::isRevealed(Cell cell) {
     if (!isValidCell(cell)) {
         return false;
@@ -122,12 +122,12 @@ bool Board::isRevealed(Cell cell) {
     return revealed_[cell.row][cell.col];
 }
 
-// Проверка, окончена ли игра
+// Checking if the game is over
 bool Board::isGameOver() {
     return game_over_;
 }
 
-// Подсчет количества мин вокруг клетки
+// Counting the number of mines around the cell
 int Board::numMinesAround(Cell cell) {
     if (!isValidCell(cell)) {
         return 0;
@@ -144,35 +144,35 @@ int Board::numMinesAround(Cell cell) {
     return num_mines;
 }
 
-// Проверка, является ли клетка допустимой на доске
+// Checking if a cell is valid on the board
 bool Board::isValidCell(Cell cell) {
     return cell.row >= 0 && cell.row < BOARD_SIZE&& cell.col >= 0 && cell.col < BOARD_SIZE;
 }
 
-// Проверка, являются ли две клетки соседними
+// Checking if two cells are adjacent
 bool Board::isAdjacent(Cell c1, Cell c2) {
     return abs(c1.row - c2.row) <= 1 && abs(c1.col - c2.col) <= 1;
 }
 
-// Функция main для игры
+// The main function for the game
 int main() {
-    // Инициализация генератора случайных чисел
+    // Initializing the random number generator
     srand(time(nullptr));
-    // Создание доски
+    // Creating a board
     Board board;
     // Игровой цикл
     while (!board.isGameOver()) {
-        // Отображение доски
+        // Board display
         board.display();
-        // Ввод клетки
+        // Cell entry
         int row, col;
         cout << "Enter row and column: ";
         cin >> row >> col;
         Cell cell = { row, col };
-        // Открытие клетки
+        // Cell opening
         board.reveal(cell);
     }
-    // Отображение окончательной доски
+    // Displaying the final board
     board.display();
     return 0;
 }
